@@ -1,0 +1,21 @@
+.ACTools_toolbar-icon_cross {
+	height: 14px;
+	width: 15px;
+
+	margin: 2px;
+
+	background-image: resource("Sprites/Icons_Cross");
+	-unity-background-image-tint-color: rgba(86, 86, 86, 1.0);
+}
+
+.ACTools_toolbar-icon_refresh {
+	height: 18px;
+	width: 18px;
+
+	background-image: resource("Sprites/Icons_RefreshCircle");
+	-unity-background-image-tint-color: rgba(86, 86, 86, 1.0);
+}
+
+.ACTools_template-container {
+	flex-grow: 1;
+}

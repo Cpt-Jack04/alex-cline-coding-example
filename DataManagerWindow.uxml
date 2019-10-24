@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd">
+
+  <editor:Toolbar name="Toolbar">
+    
+    <editor:ToolbarMenu name="CreateMenu" tooltip="Choose how you wish to a new DataType."/>
+    <editor:ToolbarSearchField name="SearchTypes" tooltip="Search through existing DataTypes."/>
+    <editor:ToolbarButton name ="RefreshButton" tooltip="Refresh the Data Manager."/>
+    
+  </editor:Toolbar>  
+
+  <engine:VisualElement name="MainRow" class="row_main">
+    
+    <engine:VisualElement name="LeftColumn" class="column column-container_left">
+      <engine:Label name ="LC_Header" text="DataTypes" class="column_header"/>
+      <engine:VisualElement name="LC_Items" class="column_list"/>
+    </engine:VisualElement>
+
+    <engine:VisualElement name="RightColumn" class="column column-container_right">
+      <engine:Label name ="RC_Header" text="DataType Objects" class="column_header"/>
+      <engine:VisualElement name="RC_Items" class="column_list"/>
+    </engine:VisualElement>
+    
+  </engine:VisualElement>
+
+</engine:UXML>
