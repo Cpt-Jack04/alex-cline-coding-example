@@ -36,15 +36,15 @@ var Genre = function (name) {
     };
 };
 
-var Book = function (name, author, genre) {
+var Book = function (name, authorID, genreID) {
     "use strict";
     previousBookID += 1;
     this.id = previousBookID;
     this.name = name;
-    this.authorID = author.id;
-    this.genreID = genre.id;
-    this.created_at = new Date();
-    this.lastUpdatedAt = this.created_at;
+    this.authorID = authorID;
+    this.genreID = genreID;
+    this.createdAt = new Date();
+    this.lastUpdatedAt = this.createdAt;
     
     this.UpdateName = function (newName) {
         this.name = newName;

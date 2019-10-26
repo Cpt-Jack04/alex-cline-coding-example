@@ -1,55 +1,153 @@
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// Gets an item from a given array based on a given itemID.
-// Returns -1 if itemID is not found.
-var GetItemFromArray = function (itemID, itemArray) {
+// Adds an item to a given array based on a given item's ID.
+var AddItemToArray = function (item, itemArray) {
     "use strict";
-    var currentIndex = Math.floor(itemArray.length / 2);
-
-    while (Math.floor(currentIndex / 2) > 0) {
-        if (itemArray[currentIndex].id === itemID) {
-            return itemArray[currentIndex];
-        } else if (itemArray[currentIndex].id > itemID) {
-            currentIndex -= Math.floor(currentIndex / 2);
-        } else {
-            currentIndex += Math.floor(currentIndex / 2);
-        }
-    }
-    return -1;
+    itemArray.push(item);
+    itemArray.sort(function (a, b) {return a.name - b.name; });
 };
 
-// Returns the give array.
-var GetAllItemsFromArray = function (itemArray) {
+// Gets an item from a given array based on a given itemID.
+// Returns the item of the corrisponding itemID. Returns null if item is not found.
+var GetItemFromArray = function (itemID, itemArray) {
     "use strict";
-    return itemArray;
+    itemArray.find(function (item) {
+        if (item.id === itemID) {
+            return item;
+        }
+    });
+    return null;
 };
 
 // Removes an item from a given array based on a given itemID.
-// Returns true if itemID is removed. If item is not removed, returns false.
+// Returns the removed item. Returns null if item is not found.
 var RemoveItemFromArray = function (itemID, itemArray) {
     "use strict";
-    var currentIndex = Math.floor(itemArray.length / 2);
+    if (itemArray.length === 1 && itemArray[0].id === itemID) {
+        return itemArray.pop();
+    } else if (itemArray.length > 1) {
+        var toRemove = new GetItemFromArray(itemID, itemArray);
+        
+        if (toRemove !== null) {
+            var swapIndex = itemArray.findIndex(function (item) {
+                    return item.id === toRemove.id;
+                });
 
-    while (Math.floor(currentIndex / 2) > 0) {
-        if (itemArray[currentIndex].id === itemID) {
-            while (currentIndex < itemArray.length - 1) {
-                itemArray[currentIndex] = itemArray[currentIndex + 1];
-            }
-            return true;
-        } else if (itemArray[currentIndex].id > itemID) {
-            currentIndex -= Math.floor(currentIndex / 2);
-        } else {
-            currentIndex += Math.floor(currentIndex / 2);
+            itemArray[swapIndex] = itemArray[itemArray.length - 1];
+            itemArray[itemArray.length - 1] = toRemove;
+
+            return itemArray.pop();
         }
     }
-    return false;
+    return null;
 };
 
+/* Object Collections */
+///////////////////////////////////////////////////////////////////////////////////////////////////
 var authors = {
-    itemArray : [],
+    authorsArray : [],
     
-    GetItem : function (itemID) {
+    CreateAuthor : function (name, age) {
         "use strict";
-        return new GetAllItemsFromArray(itemID, this.itemArray);
-    };
+        var newAuthor = new Author(name, age);
+        return new AddItemToArray(newAuthor, this.authorsArray);
+    },
+    
+    GetAuthorByID : function (authorID) {
+        "use strict";
+        return new GetItemFromArray(authorID, this.authorsArray);
+    },
+    
+    GetAllAuthors : function () {
+        "use strict";
+        return this.authorsArray;
+    },
+    
+    UpdateAuthorByID : function (authorID, newName, newAge) {
+        "use strict";
+        var updatingAuthor = new GetItemFromArray(authorID, this.authorsArray);
+        if (updatingAuthor.name !== newName) {
+            updatingAuthor.UpdateName(newName);
+        }
+        if (updatingAuthor.age !== newAge) {
+            updatingAuthor.UpdateAge(newAge);
+        }
+    },
+    
+    RemoveAuthor : function (authorID) {
+        "use strict";
+        return new RemoveItemFromArray(authorID, this.authorsArray);
+    }
+};
+
+var genres = {
+    genresArray : [],
+    
+    CreateGenre : function (name) {
+        "use strict";
+        var newGenre = new Genre(name);
+        return new AddItemToArray(newGenre, this.genresArray);
+    },
+    
+    GetGenreByID : function (genreID) {
+        "use strict";
+        return new GetItemFromArray(genreID, this.genresArray);
+    },
+    
+    GetAllGenres : function () {
+        "use strict";
+        return this.genresArray;
+    },
+    
+    UpdateGenreByID : function (genreID, newName) {
+        "use strict";
+        var updatingGenre = new GetItemFromArray(genreID, this.genresArray);
+        if (updatingGenre.name !== newName) {
+            updatingGenre.UpdateName(newName);
+        }
+    },
+    
+    RemoveGenre : function (genreID) {
+        "use strict";
+        return new RemoveItemFromArray(genreID, this.genresArray);
+    }
+};
+
+var books = {
+    booksArray : [],
+    
+    CreateBook : function (name, authorID, genreID) {
+        "use strict";
+        var newBook = new Book(name, authorID, genreID);
+        return new AddItemToArray(newBook, this.booksArray);
+    },
+    
+    GetBookByID : function (bookID) {
+        "use strict";
+        return new GetItemFromArray(bookID, this.booksArray);
+    },
+    
+    GetAllBooks : function () {
+        "use strict";
+        return this.booksArray;
+    },
+    
+    UpdateBookByID : function (bookID, newName, newAuthor, newGenre) {
+        "use strict";
+        var updatingBook = new GetItemFromArray(bookID, this.booksArray);
+        if (updatingBook.name !== newName) {
+            updatingBook.UpdateName(newName);
+        }
+        if (updatingBook.authorID !== newAuthor.id) {
+            updatingBook.UpdatAuthorID(newAuthor);
+        }
+        if (updatingBook.genreID !== newGenre.id) {
+            updatingBook.UpdateGenreID(newGenre);
+        }
+    },
+    
+    RemoveBook : function (bookID) {
+        "use strict";
+        return new RemoveItemFromArray(bookID, this.booksArray);
+    }
 };
