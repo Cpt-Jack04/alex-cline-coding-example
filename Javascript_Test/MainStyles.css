@@ -1,52 +1,40 @@
-#button-header {
+#header {
     text-align: center;
-    
+    padding: 30px 0px 0px;
 }
 
-#button-header > p {
+#header-buttons {
+    text-align: right;
+}
+
+#header-buttons > p {
     font-weight: 900;
     text-align: right;
     text-transform: uppercase;
     
     display: inline-block;
     
-    padding: 10px 100px;
+    padding: 10px 20px;
     border-radius: 5px;
-    margin: 10 50;
+    margin: 0 auto 25 20;
     
     background-color: rgba(60, 63, 65, 1.0);
 }
 
-#button-header > p:hover{
-    font-weight: 900;
-    text-align: right;
-    text-transform: uppercase;
-    
-    display: inline-block;
-    
-    padding: 10px 100px;
-    border-radius: 5px;
-    margin: 10 50;
-    
+#header-buttons > p:hover {
     background-color: rgba(66, 69, 71, 1.0);
 }
 
-#button-header > p:active{
-    font-weight: 900;
-    text-align: right;
-    text-transform: uppercase;
-    
-    display: inline-block;
-    
-    padding: 10px 100px;
-    border-radius: 5px;
-    margin: 10 50;
-    
+#header-buttons > p:active {
     background-color: rgba(78, 81, 83, 1.0);
 }
 
-#header {    
-    padding: 30px 0px 0px;
+#header-spacer {
+    margin: 0 208;
+}
+
+#header-text {
+    display: inline-block;
 }
 
 #wrapper {
@@ -64,9 +52,7 @@ body {
     background-color: rgba(29, 31, 33, 1.0);
 }
 
-h1 {
-    display: inline-block;
-    
+h1 {    
     font-weight: 900;
     
     margin: 10 auto 0 auto;
