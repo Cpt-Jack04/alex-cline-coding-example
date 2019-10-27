@@ -1,46 +1,73 @@
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Adds an item to a given array based on a given item's ID.
-var AddItemToArray = function (item, itemArray) {
+function AddItemToArray(item, itemArray) {
     "use strict";
     itemArray.push(item);
-    itemArray.sort(function (a, b) {return a.name - b.name; });
-};
+    itemArray.sort(function (a, b) {
+        var returnValue = 0;
+        
+        if (a.name < b.name) {
+            returnValue = -1;
+        }
+        if (a.name > b.name) {
+            returnValue = 1;
+        }
+        return returnValue;
+    });
+}
+
+/// Returns true if the given item.id matches itemID.
+function MyIDMatches(itemID, item) {
+    "use strict";
+    return item.id === itemID;
+}
 
 // Gets an item from a given array based on a given itemID.
 // Returns the item of the corrisponding itemID. Returns null if item is not found.
-var GetItemFromArray = function (itemID, itemArray) {
+function GetItemFromArray(itemID, itemArray) {
     "use strict";
-    itemArray.find(function (item) {
-        if (item.id === itemID) {
-            return item;
+    var returnMe;
+    
+    var index;
+    for (index = 0; index < itemArray.length; index++) {
+        if (MyIDMatches(itemID, itemArray[index])) {
+            returnMe = itemArray[index];
+            break;
         }
-    });
-    return null;
-};
+    }
+    return returnMe;
+}
 
 // Removes an item from a given array based on a given itemID.
 // Returns the removed item. Returns null if item is not found.
-var RemoveItemFromArray = function (itemID, itemArray) {
+function RemoveItemFromArray(itemID, itemArray) {
     "use strict";
+    var returnMe = null;
+    
     if (itemArray.length === 1 && itemArray[0].id === itemID) {
-        return itemArray.pop();
+        returnMe = itemArray.pop();
     } else if (itemArray.length > 1) {
-        var toRemove = new GetItemFromArray(itemID, itemArray);
-        
+        var toRemove = GetItemFromArray(itemID, itemArray);
+            
         if (toRemove !== null) {
-            var swapIndex = itemArray.findIndex(function (item) {
-                    return item.id === toRemove.id;
-                });
-
+            var swapIndex;
+            
+            for (swapIndex = 0; swapIndex < itemArray.length; swapIndex++) {
+                if (MyIDMatches(itemID, itemArray[swapIndex])) {
+                    toRemove = itemArray[swapIndex];
+                    break;
+                }
+            }
+            
             itemArray[swapIndex] = itemArray[itemArray.length - 1];
             itemArray[itemArray.length - 1] = toRemove;
-
-            return itemArray.pop();
+        
+            returnMe = itemArray.pop();
         }
     }
-    return null;
-};
+    return returnMe;
+}
 
 /* Object Collections */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,12 +77,12 @@ var authors = {
     CreateAuthor : function (name, age) {
         "use strict";
         var newAuthor = new Author(name, age);
-        return new AddItemToArray(newAuthor, this.authorsArray);
+        return AddItemToArray(newAuthor, this.authorsArray);
     },
     
     GetAuthorByID : function (authorID) {
         "use strict";
-        return new GetItemFromArray(authorID, this.authorsArray);
+        return GetItemFromArray(authorID, this.authorsArray);
     },
     
     GetAllAuthors : function () {
@@ -76,7 +103,7 @@ var authors = {
     
     RemoveAuthor : function (authorID) {
         "use strict";
-        return new RemoveItemFromArray(authorID, this.authorsArray);
+        return RemoveItemFromArray(authorID, this.authorsArray);
     }
 };
 
@@ -86,12 +113,12 @@ var genres = {
     CreateGenre : function (name) {
         "use strict";
         var newGenre = new Genre(name);
-        return new AddItemToArray(newGenre, this.genresArray);
+        return AddItemToArray(newGenre, this.genresArray);
     },
     
     GetGenreByID : function (genreID) {
         "use strict";
-        return new GetItemFromArray(genreID, this.genresArray);
+        return GetItemFromArray(genreID, this.genresArray);
     },
     
     GetAllGenres : function () {
@@ -109,7 +136,7 @@ var genres = {
     
     RemoveGenre : function (genreID) {
         "use strict";
-        return new RemoveItemFromArray(genreID, this.genresArray);
+        return RemoveItemFromArray(genreID, this.genresArray);
     }
 };
 
@@ -119,12 +146,31 @@ var books = {
     CreateBook : function (name, authorID, genreID) {
         "use strict";
         var newBook = new Book(name, authorID, genreID);
-        return new AddItemToArray(newBook, this.booksArray);
+        return AddItemToArray(newBook, this.booksArray);
     },
     
     GetBookByID : function (bookID) {
         "use strict";
-        return new GetItemFromArray(bookID, this.booksArray);
+        return GetItemFromArray(bookID, this.booksArray);
+    },
+    
+    GetBookByNames : function (name, author, genre) {
+        "use strict";
+        var shouldLoop = true;
+        var returnMe;
+        var book;
+        
+        var index;
+        for (index = 0; index < this.booksArray.length; index++) {
+            if (shouldLoop) {
+                book = this.booksArray[index];
+                if (book.name === name && authors.GetAuthorByID(book.authorID).name === author && genres.GetGenreByID(book.genreID).name === genre) {
+                    shouldLoop = false;
+                    returnMe = book;
+                }
+            }
+        }
+        return returnMe;
     },
     
     GetAllBooks : function () {
@@ -148,6 +194,21 @@ var books = {
     
     RemoveBook : function (bookID) {
         "use strict";
-        return new RemoveItemFromArray(bookID, this.booksArray);
+        return RemoveItemFromArray(bookID, this.booksArray);
     }
 };
+
+authors.CreateAuthor("Tolken, J.R.", 127);
+authors.CreateAuthor("Ludlum, Robert", 92);
+authors.CreateAuthor("Doran, John P.", 35);
+
+genres.CreateGenre("Tutorials");
+genres.CreateGenre("Fantasy");
+genres.CreateGenre("Spy Fiction");
+
+books.CreateBook("The Bourne Identity", 2, 3);
+books.CreateBook("The Lord of the Rings: The Two Towers", 1, 2);
+books.CreateBook("Unity 5: Learning C# by Developing Games", 3, 1);
+books.CreateBook("Building an FPS Game with Unity", 3, 1);
+books.CreateBook("The Hobbit", 1, 2);
+books.CreateBook("The Bourne Ultimatum", 2, 3);
