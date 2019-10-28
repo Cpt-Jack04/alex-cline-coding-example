@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>JavaScript Test - Alex Cline</title>
+        <link href="MainStyles.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        
+        <div id="wrapper">
+            
+            <div id="header">
+                <span id="header-text">
+                    <h1>Book List</h1>
+                </span>
+                <sp id="header-spacer"></sp>
+                <span id="header-buttons">
+                    <p id="add-button">Add New Book</p>
+                    <p id="remove-button">Remove Book</p>
+                </span>
+            </div>
+            
+            <div id="add-book-window">
+                <form>
+                    Enter the Book yitle:<br>
+                    <input type="text" name="title">
+                    Enter the Author's Name followed by their age (example - Tolken, J.R._127):<br>
+                    <input type="text" name="author">
+                    Enter the Book's genre:<br>
+                    <input type="text" name="genre">
+                    <button id="add-book-submit-button" type="button">Submit the Book.</button>
+                </form>
+            </div>
+                        
+            <table>
+                <tbody id="table-books">
+                    <tr id="row-header">
+                        <th>Book Title:</th>
+                        <th>Author:</th>
+                        <th>Genre:</th>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        
+        <script src="Scripts/ObjectDefinitions.js"></script>
+        <script src="Scripts/ObjectCollections.js"></script>
+        <script src="Scripts/ButtonFunctions.js"></script>
+        
+    </body>
+</html>

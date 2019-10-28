@@ -1,0 +1,173 @@
+#add-book-submit-button {
+    color: whitesmoke;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    
+    display: inline-block;
+        
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 0;
+    
+    background-color: rgba(20, 21, 23, 1.0);
+}
+
+#add-book-submit-button:hover {
+    background-color: rgba(66, 69, 71, 1.0);
+}
+
+#add-book-submit-button:active {
+    background-color: rgba(78, 81, 83, 1.0);
+}
+
+#add-book-window {
+    overflow: hidden;
+    
+    width: auto;
+    height: 0px;
+    
+    -webkit-transition: height 1.0s;
+    -moz-transition: height 1.0s;
+    transition: height 1.0s;
+    
+    margin: 0 auto 25 auto;
+    
+    background-color: rgba(60, 63, 65, 1.0);
+}
+
+#add-book-window.window-open {
+    height: 450px;
+}
+
+#add-book-window > form {
+    color: whitesmoke;
+    font-weight: bolder;
+    
+    width: inherit;
+    height: 400px;
+    
+    padding: 10px 20px 0px;
+    margin: 10 20 0;
+}
+
+#header {
+    text-align: center;
+    
+    padding: 30px 0px 0px;
+}
+
+#header-buttons {
+    text-align: right;
+}
+
+#header-buttons > p {
+    font-weight: 900;
+    text-align: right;
+    text-transform: uppercase;
+    
+    display: inline-block;
+    
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 auto 25 20;
+    
+    background-color: rgba(60, 63, 65, 1.0);
+}
+
+#header-buttons > p:hover {
+    background-color: rgba(66, 69, 71, 1.0);
+}
+
+#header-buttons > p:active {
+    background-color: rgba(78, 81, 83, 1.0);
+}
+
+#header-spacer {
+    margin: 0 208;
+}
+
+#header-text {
+    display: inline-block;
+}
+
+#wrapper {
+    width: 988px;
+    
+    margin: 0 auto;
+}
+
+.selected {
+    background-color: rgba(90, 93, 119, 1.0) !important;
+}
+
+body {
+    font-family: arial;
+    color: whitesmoke;
+    
+    margin: 0px;
+    
+    background-color: rgba(29, 31, 33, 1.0);
+}
+
+input {
+    color: whitesmoke;
+    font-weight: bold;
+    
+    display: block;
+    
+    width: 910px;
+    height: 50px;
+    
+    padding: 0px 10px;
+    margin: 0 0 50;
+    
+    background-color: rgba(20, 21, 23, 1.0);
+}
+
+h1 {    
+    font-weight: 900;
+    
+    margin: 10 auto 0 auto;
+}
+
+table {
+    width: 988px;
+    
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+table, tr {
+    border: 4px solid rgba(20, 21, 23, 1.0);
+}
+
+th {
+    font-weight: 100;
+}
+
+th:first-child {
+    font-style: italic;
+}
+
+th, td {
+    text-align: left;
+    
+    width: 300px;
+    
+    padding: 7.5px 10px;
+    border: 2px solid rgba(20, 21, 23, 1.0);
+    margin: 0;
+}
+
+tr:nth-child(even)  {
+    background-color: rgba(60, 63, 65, 1.0);
+}
+
+tr:nth-child(1) > th{
+    font-weight: 900;
+    font-style: normal;
+    text-align: center;
+    
+    background-color: rgba(20, 21, 23, 1.0);
+}
