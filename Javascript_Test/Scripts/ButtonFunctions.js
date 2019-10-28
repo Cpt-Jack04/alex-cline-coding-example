@@ -1,5 +1,9 @@
-var newBookButton = document.getElementById("AddButton");
-var removeBookButton = document.getElementById("RemoveButton");
+var newBookButton = document.getElementById("add-button");
+var newBookWindow = document.getElementById("add-book-window");
+var newBookTextField = document.getElementsByTagName("input");
+var newBookSubmitButton = document.getElementById("add-book-submit-button");
+
+var removeBookButton = document.getElementById("remove-button");
 var trTags = document.getElementById("table-books").getElementsByTagName("tr");
 var selectedElement = null;
 var selectedNames = [];
@@ -90,6 +94,43 @@ removeBookButton.onclick = function () {
         var removedBook = books.RemoveBook(books.GetBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
         RefreshBookTable();
     }
+}
+
+newBookButton.onclick = function () {
+    if (newBookWindow.classList == "") {
+        newBookWindow.classList = "window-open";
+    }
+}
+
+newBookSubmitButton.onclick = function () {
+    var authorInfo = newBookTextField[1].value.toString().split("_");
+    var authorID;
+    
+    var genreID;
+    
+    var index;
+    for (index = 0; index < authors.GetAllAuthors(); index++) {
+        authorID = authors.GetAuthorByName(authorInfo[0]).id;
+        console.log("1-authorID: " + authorID);
+    }
+    if (authorID == undefined) {
+        authorID = authors.CreateAuthor(authorInfo[0], parseInt(authorInfo[1]));
+        console.log("2-authorID: " + authorID);
+    }
+    
+    var temp = genres.GetGenreByName(newBookTextField[2].value);
+    genreID = genres.GetGenreByName(newBookTextField[2].value).id;
+    console.log("1-genreID: " + genreID);
+    if (genreID == undefined) {
+        genreID = genres.CreateGenre(newBookTextField[2].value);
+        console.log("2-genreID: " + genreID);
+    }
+    
+    books.CreateBook(newBookTextField[0].value, authorID, genreID);
+    console.log(books.booksArray);
+    
+    RefreshBookTable();
+    newBookWindow.classList = "";
 }
 
 RefreshBookTable();

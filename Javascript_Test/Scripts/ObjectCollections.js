@@ -85,6 +85,25 @@ var authors = {
         return GetItemFromArray(authorID, this.authorsArray);
     },
     
+    GetAuthorByName : function (name) {
+        "use strict";
+        var shouldLoop = true;
+        var returnMe;
+        var author;
+        
+        var index;
+        for (index = 0; index < this.authorsArray.length; index++) {
+            if (shouldLoop) {
+                author = this.authorsArray[index];
+                if (author.name == name) {
+                    shouldLoop = false;
+                    returnMe = author;
+                }
+            }
+        }
+        return returnMe;
+    },
+    
     GetAllAuthors : function () {
         "use strict";
         return this.authorsArray;
@@ -119,6 +138,25 @@ var genres = {
     GetGenreByID : function (genreID) {
         "use strict";
         return GetItemFromArray(genreID, this.genresArray);
+    },
+    
+    GetGenreByName : function (name) {
+        "use strict";
+        var shouldLoop = true;
+        var returnMe;
+        var genre;
+        
+        var index;
+        for (index = 0; index < this.genresArray.length; index++) {
+            if (shouldLoop) {
+                genre = this.genresArray[index];
+                if (genres.name == name) {
+                    shouldLoop = false;
+                    returnMe = genre;
+                }
+            }
+        }
+        return returnMe;
     },
     
     GetAllGenres : function () {

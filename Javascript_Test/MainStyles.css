@@ -1,5 +1,59 @@
+#add-book-submit-button {
+    color: whitesmoke;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+    
+    display: inline-block;
+        
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 0;
+    
+    background-color: rgba(20, 21, 23, 1.0);
+}
+
+#add-book-submit-button:hover {
+    background-color: rgba(66, 69, 71, 1.0);
+}
+
+#add-book-submit-button:active {
+    background-color: rgba(78, 81, 83, 1.0);
+}
+
+#add-book-window {
+    overflow: hidden;
+    
+    width: auto;
+    height: 0px;
+    
+    -webkit-transition: height 1.0s;
+    -moz-transition: height 1.0s;
+    transition: height 1.0s;
+    
+    margin: 0 auto 25 auto;
+    
+    background-color: rgba(60, 63, 65, 1.0);
+}
+
+#add-book-window.window-open {
+    height: 450px;
+}
+
+#add-book-window > form {
+    color: whitesmoke;
+    font-weight: bolder;
+    
+    width: inherit;
+    height: 400px;
+    
+    padding: 10px 20px 0px;
+    margin: 10 20 0;
+}
+
 #header {
     text-align: center;
+    
     padding: 30px 0px 0px;
 }
 
@@ -54,6 +108,21 @@ body {
     margin: 0px;
     
     background-color: rgba(29, 31, 33, 1.0);
+}
+
+input {
+    color: whitesmoke;
+    font-weight: bold;
+    
+    display: block;
+    
+    width: 910px;
+    height: 50px;
+    
+    padding: 0px 10px;
+    margin: 0 0 50;
+    
+    background-color: rgba(20, 21, 23, 1.0);
 }
 
 h1 {    
