@@ -64,6 +64,17 @@ function RemoveItemFromArray(itemID, itemArray) {
             itemArray[itemArray.length - 1] = toRemove;
         
             returnMe = itemArray.pop();
+            itemArray.sort(function (a, b) {
+                var returnValue = 0;
+
+                if (a.name < b.name) {
+                    returnValue = -1;
+                }
+                if (a.name > b.name) {
+                    returnValue = 1;
+                }
+                return returnValue;
+            });
         }
     }
     return returnMe;
@@ -150,7 +161,7 @@ var genres = {
         for (index = 0; index < this.genresArray.length; index++) {
             if (shouldLoop) {
                 genre = this.genresArray[index];
-                if (genres.name == name) {
+                if (genre.name == name) {
                     shouldLoop = false;
                     returnMe = genre;
                 }

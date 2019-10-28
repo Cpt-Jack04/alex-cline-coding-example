@@ -104,30 +104,26 @@ newBookButton.onclick = function () {
 
 newBookSubmitButton.onclick = function () {
     var authorInfo = newBookTextField[1].value.toString().split("_");
-    var authorID;
     
-    var genreID;
+    var authorString = String(authorInfo[0])
+    var tempAuthor = authors.GetAuthorByName(authorString);
+    if (tempAuthor == undefined) {
+        tempAuthor = authors.CreateAuthor(authorString, parseInt(authorInfo[1]));
+    }
+    tempAuthor = authors.GetAuthorByName(authorString);
     
+    var genreString = String(newBookTextField[2].value);
+    var tempGenre = genres.GetGenreByName(genreString);
+    if (tempGenre == undefined) {
+        tempGenre = genres.CreateGenre(newBookTextField[2].value);
+    }
+    tempGenre = genres.GetGenreByName(genreString);
+    
+    books.CreateBook(newBookTextField[0].value, tempAuthor.id, tempGenre.id);
     var index;
-    for (index = 0; index < authors.GetAllAuthors(); index++) {
-        authorID = authors.GetAuthorByName(authorInfo[0]).id;
-        console.log("1-authorID: " + authorID);
+    for (index = 0; index < newBookTextField.length; index++) {
+        newBookTextField[index].value = "";
     }
-    if (authorID == undefined) {
-        authorID = authors.CreateAuthor(authorInfo[0], parseInt(authorInfo[1]));
-        console.log("2-authorID: " + authorID);
-    }
-    
-    var temp = genres.GetGenreByName(newBookTextField[2].value);
-    genreID = genres.GetGenreByName(newBookTextField[2].value).id;
-    console.log("1-genreID: " + genreID);
-    if (genreID == undefined) {
-        genreID = genres.CreateGenre(newBookTextField[2].value);
-        console.log("2-genreID: " + genreID);
-    }
-    
-    books.CreateBook(newBookTextField[0].value, authorID, genreID);
-    console.log(books.booksArray);
     
     RefreshBookTable();
     newBookWindow.classList = "";
