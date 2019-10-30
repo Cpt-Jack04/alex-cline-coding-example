@@ -11,4 +11,5 @@ DataManagerWindow.uss
 There scripts are from a editor exstension for Unity I'm currently working on, so it is a work in progress.
 
 
-# The test has been completed.
+# The Javascript Test
+The javascript test was a test for an internship option at BURO302, a media development teamat HAN University of Applied Sciences that does paid client work. I was accepted into BURO302 after this test.
