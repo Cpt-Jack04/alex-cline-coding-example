@@ -1,8 +1,9 @@
+"use strict";
+
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Adds an item to a given array based on a given item's ID.
 function AddItemToArray(item, itemArray) {
-    "use strict";
     itemArray.push(item);
     itemArray.sort(function (a, b) {
         var returnValue = 0;
@@ -19,14 +20,12 @@ function AddItemToArray(item, itemArray) {
 
 /// Returns true if the given item.id matches itemID.
 function MyIDMatches(itemID, item) {
-    "use strict";
     return item.id === itemID;
 }
 
 // Gets an item from a given array based on a given itemID.
 // Returns the item of the corrisponding itemID. Returns null if item is not found.
 function GetItemFromArray(itemID, itemArray) {
-    "use strict";
     var returnMe;
     
     var index;
@@ -42,7 +41,6 @@ function GetItemFromArray(itemID, itemArray) {
 // Removes an item from a given array based on a given itemID.
 // Returns the removed item. Returns null if item is not found.
 function RemoveItemFromArray(itemID, itemArray) {
-    "use strict";
     var returnMe = null;
     
     if (itemArray.length === 1 && itemArray[0].id === itemID) {
@@ -86,18 +84,15 @@ var authors = {
     authorsArray : [],
     
     CreateAuthor : function (name, age) {
-        "use strict";
         var newAuthor = new Author(name, age);
         return AddItemToArray(newAuthor, this.authorsArray);
     },
     
     GetAuthorByID : function (authorID) {
-        "use strict";
         return GetItemFromArray(authorID, this.authorsArray);
     },
     
     GetAuthorByName : function (name) {
-        "use strict";
         var shouldLoop = true;
         var returnMe;
         var author;
@@ -116,12 +111,10 @@ var authors = {
     },
     
     GetAllAuthors : function () {
-        "use strict";
         return this.authorsArray;
     },
     
     UpdateAuthorByID : function (authorID, newName, newAge) {
-        "use strict";
         var updatingAuthor = new GetItemFromArray(authorID, this.authorsArray);
         if (updatingAuthor.name !== newName) {
             updatingAuthor.UpdateName(newName);
@@ -132,7 +125,6 @@ var authors = {
     },
     
     RemoveAuthor : function (authorID) {
-        "use strict";
         return RemoveItemFromArray(authorID, this.authorsArray);
     }
 };
@@ -141,18 +133,15 @@ var genres = {
     genresArray : [],
     
     CreateGenre : function (name) {
-        "use strict";
         var newGenre = new Genre(name);
         return AddItemToArray(newGenre, this.genresArray);
     },
     
     GetGenreByID : function (genreID) {
-        "use strict";
         return GetItemFromArray(genreID, this.genresArray);
     },
     
     GetGenreByName : function (name) {
-        "use strict";
         var shouldLoop = true;
         var returnMe;
         var genre;
@@ -171,20 +160,17 @@ var genres = {
     },
     
     GetAllGenres : function () {
-        "use strict";
         return this.genresArray;
     },
     
     UpdateGenreByID : function (genreID, newName) {
-        "use strict";
         var updatingGenre = new GetItemFromArray(genreID, this.genresArray);
         if (updatingGenre.name !== newName) {
             updatingGenre.UpdateName(newName);
         }
     },
     
-    RemoveGenre : function (genreID) {
-        "use strict";
+    RemoveGenre : function (genreID) 
         return RemoveItemFromArray(genreID, this.genresArray);
     }
 };
@@ -193,18 +179,15 @@ var books = {
     booksArray : [],
     
     CreateBook : function (name, authorID, genreID) {
-        "use strict";
         var newBook = new Book(name, authorID, genreID);
         return AddItemToArray(newBook, this.booksArray);
     },
     
     GetBookByID : function (bookID) {
-        "use strict";
         return GetItemFromArray(bookID, this.booksArray);
     },
     
     GetBookByNames : function (name, author, genre) {
-        "use strict";
         var shouldLoop = true;
         var returnMe;
         var book;
@@ -223,12 +206,10 @@ var books = {
     },
     
     GetAllBooks : function () {
-        "use strict";
         return this.booksArray;
     },
     
     UpdateBookByID : function (bookID, newName, newAuthor, newGenre) {
-        "use strict";
         var updatingBook = new GetItemFromArray(bookID, this.booksArray);
         if (updatingBook.name !== newName) {
             updatingBook.UpdateName(newName);
@@ -242,7 +223,6 @@ var books = {
     },
     
     RemoveBook : function (bookID) {
-        "use strict";
         return RemoveItemFromArray(bookID, this.booksArray);
     }
 };

@@ -1,3 +1,5 @@
+"use strict";
+
 var newBookButton = document.getElementById("add-button");
 var newBookWindow = document.getElementById("add-book-window");
 var newBookTextField = document.getElementsByTagName("input");
@@ -9,7 +11,6 @@ var selectedElement = null;
 var selectedNames = [];
 
 function DeselectTr(deselecting) {
-    "use strict";
     var trTag;
     
     var index;
@@ -19,7 +20,6 @@ function DeselectTr(deselecting) {
 }
 
 function ThOnClick(th) {
-    "use strict";
     th.onclick = function () {
         var shouldSelect = false;
         var tr = th.parentElement;
@@ -47,7 +47,6 @@ function ThOnClick(th) {
 }
 
 function RefreshBookTable() {
-    "use strict";
     var tbody = document.getElementById("table-books");
     DeselectTr(trTags);
     

@@ -1,9 +1,10 @@
+"use strict";
+
 var previousAuthorID = 0;
 var previousGenreID = 0;
 var previousBookID = 0;
 
 var Author = function (name, age) {
-    "use strict";
     previousAuthorID += 1;
     this.id = previousAuthorID;
     this.name = name;
@@ -23,7 +24,6 @@ var Author = function (name, age) {
 };
 
 var Genre = function (name) {
-    "use strict";
     previousGenreID += 1;
     this.id = previousGenreID;
     this.name = name;
@@ -37,7 +37,6 @@ var Genre = function (name) {
 };
 
 var Book = function (name, authorID, genreID) {
-    "use strict";
     previousBookID += 1;
     this.id = previousBookID;
     this.name = name;
