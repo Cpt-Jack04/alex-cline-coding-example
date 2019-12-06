@@ -3,13 +3,12 @@
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Sorts items by name.
-function CompareByName(itemA, itemB) {
+function compareByName(itemA, itemB) {
     var returnValue = 0;
     
     if (itemA.name < itemB.name) {
         returnValue = -1;
-    }
-    else if (itemA.name > itemB.name) {
+    } else if (itemA.name > itemB.name) {
         returnValue = 1;
     }
     
@@ -17,30 +16,28 @@ function CompareByName(itemA, itemB) {
 }
 
 // Adds an item to a given array based on a given item's ID.
-function AddItemToArray(item, itemArray) {
+function addItemToArray(item, itemArray) {
     itemArray.push(item);
-    itemArray.sort(function (itemA, itemB) {
-        return CompareByName(itemA, itemB);
-    });
+    itemArray.sort(compareByName);
 }
 
 // Gets an item from a given array based on a given itemID.
 // Returns the item of the corrisponding itemID. Returns null if item is not found.
-function GetItemFromArray(itemID, itemArray) {
-    return itemArray.find(function(element) {
-        return element.id === itemID
+function getItemFromArray(itemID, itemArray) {
+    return itemArray.find(function (element) {
+        return element.id === itemID;
     });
 }
 
 // Removes an item from a given array based on a given itemID.
 // Returns the removed item. Returns null if item is not found.
-function RemoveItemFromArray(itemID, itemArray) {
+function removeItemFromArray(itemID, itemArray) {
     var returnMe = null;
     
     if (itemArray.length === 1 && itemArray[0].id === itemID) {
         returnMe = itemArray.pop();
     } else if (itemArray.length > 1) {
-        var toRemove = GetItemFromArray(itemID, itemArray);
+        var toRemove = getItemFromArray(itemID, itemArray);
             
         if (toRemove !== null) {
             var swapIndex = itemArray.indexOf(toRemove);
@@ -49,9 +46,7 @@ function RemoveItemFromArray(itemID, itemArray) {
             itemArray[itemArray.length - 1] = toRemove;
         
             returnMe = itemArray.pop();
-            itemArray.sort(function (itemA, itemB) {
-                return CompareByName(itemA, itemB);
-            });
+            itemArray.sort(compareByName);
         }
     }
     return returnMe;
@@ -62,125 +57,125 @@ function RemoveItemFromArray(itemID, itemArray) {
 var authors = {
     authorsArray : [],
     
-    CreateAuthor : function (name, age) {
+    createAuthor : function (name, age) {
         var newAuthor = new Author(name, age);
-        return AddItemToArray(newAuthor, this.authorsArray);
+        return addItemToArray(newAuthor, this.authorsArray);
     },
     
-    GetAuthorByID : function (authorID) {
-        return GetItemFromArray(authorID, this.authorsArray);
+    getAuthorByID : function (authorID) {
+        return getItemFromArray(authorID, this.authorsArray);
     },
     
-    GetAuthorByName : function (name) {
+    getAuthorByName : function (name) {
         return this.authorsArray.find(function (author) {
-            return author.name == name;
+            return author.name === name;
         });
     },
     
-    GetAllAuthors : function () {
+    getAllAuthors : function () {
         return this.authorsArray;
     },
     
-    UpdateAuthorByID : function (authorID, newName, newAge) {
-        var updatingAuthor = new GetItemFromArray(authorID, this.authorsArray);
+    updateAuthorByID : function (authorID, newName, newAge) {
+        var updatingAuthor = getItemFromArray(authorID, this.authorsArray);
         if (updatingAuthor.name !== newName) {
-            updatingAuthor.UpdateName(newName);
+            updatingAuthor.updateName(newName);
         }
         if (updatingAuthor.age !== newAge) {
-            updatingAuthor.UpdateAge(newAge);
+            updatingAuthor.updateAge(newAge);
         }
     },
     
-    RemoveAuthor : function (authorID) {
-        return RemoveItemFromArray(authorID, this.authorsArray);
+    removeAuthor : function (authorID) {
+        return removeItemFromArray(authorID, this.authorsArray);
     }
 };
 
 var genres = {
     genresArray : [],
     
-    CreateGenre : function (name) {
+    createGenre : function (name) {
         var newGenre = new Genre(name);
-        return AddItemToArray(newGenre, this.genresArray);
+        return addItemToArray(newGenre, this.genresArray);
     },
     
-    GetGenreByID : function (genreID) {
-        return GetItemFromArray(genreID, this.genresArray);
+    getGenreByID : function (genreID) {
+        return getItemFromArray(genreID, this.genresArray);
     },
     
-    GetGenreByName : function (name) {
+    getGenreByName : function (name) {
         return this.genresArray.find(function (genre) {
-            return genre.name == name
+            return genre.name === name;
         });
     },
     
-    GetAllGenres : function () {
+    getAllGenres : function () {
         return this.genresArray;
     },
     
-    UpdateGenreByID : function (genreID, newName) {
-        var updatingGenre = new GetItemFromArray(genreID, this.genresArray);
+    updateGenreByID : function (genreID, newName) {
+        var updatingGenre = getItemFromArray(genreID, this.genresArray);
         if (updatingGenre.name !== newName) {
-            updatingGenre.UpdateName(newName);
+            updatingGenre.updateName(newName);
         }
     },
     
-    RemoveGenre : function (genreID) {
-        return RemoveItemFromArray(genreID, this.genresArray);
+    removeGenre : function (genreID) {
+        return removeItemFromArray(genreID, this.genresArray);
     }
 };
 
 var books = {
     booksArray : [],
     
-    CreateBook : function (name, authorID, genreID) {
+    createBook : function (name, authorID, genreID) {
         var newBook = new Book(name, authorID, genreID);
-        return AddItemToArray(newBook, this.booksArray);
+        return addItemToArray(newBook, this.booksArray);
     },
     
-    GetBookByID : function (bookID) {
-        return GetItemFromArray(bookID, this.booksArray);
+    getBookByID : function (bookID) {
+        return getItemFromArray(bookID, this.booksArray);
     },
     
-    GetBookByNames : function (name, author, genre) {
-        return this.booksArray.find(function(book) {
-            return book.name === name && authors.GetAuthorByID(book.authorID).name === author && genres.GetGenreByID(book.genreID).name === genre
+    getBookByNames : function (name, author, genre) {
+        return this.booksArray.find(function (book) {
+            return book.name === name && authors.getAuthorByID(book.authorID).name === author && genres.getGenreByID(book.genreID).name === genre;
         });
     },
     
-    GetAllBooks : function () {
+    getAllBooks : function () {
         return this.booksArray;
     },
     
-    UpdateBookByID : function (bookID, newName, newAuthor, newGenre) {
-        var updatingBook = new GetItemFromArray(bookID, this.booksArray);
+    updateBookByID : function (bookID, newName, newAuthor, newGenre) {
+        var updatingBook = getItemFromArray(bookID, this.booksArray);
         if (updatingBook.name !== newName) {
-            updatingBook.UpdateName(newName);
+            updatingBook.updateName(newName);
         }
         if (updatingBook.authorID !== newAuthor.id) {
-            updatingBook.UpdatAuthorID(newAuthor);
+            updatingBook.updatAuthorID(newAuthor);
         }
         if (updatingBook.genreID !== newGenre.id) {
-            updatingBook.UpdateGenreID(newGenre);
+            updatingBook.updateGenreID(newGenre);
         }
     },
     
-    RemoveBook : function (bookID) {
-        return RemoveItemFromArray(bookID, this.booksArray);
+    removeBook : function (bookID) {
+        return removeItemFromArray(bookID, this.booksArray);
     }
 };
 
-authors.CreateAuthor("Tolken, J.R.", 127);
-authors.CreateAuthor("Ludlum, Robert", 92);
-authors.CreateAuthor("Doran, John P.", 35);
+authors.createAuthor("Tolken, J.R.", 127);
+authors.createAuthor("Ludlum, Robert", 92);
+authors.createAuthor("Doran, John P.", 35);
 
-genres.CreateGenre("Tutorials");
-genres.CreateGenre("Fantasy");
-genres.CreateGenre("Spy Fiction");
+genres.createGenre("Tutorials");
+genres.createGenre("Fantasy");
+genres.createGenre("Spy Fiction");
 
-books.CreateBook("The Bourne Identity", 2, 3);
-books.CreateBook("The Lord of the Rings: The Two Towers", 1, 2);
-books.CreateBook("Unity 5: Learning C# by Developing Games", 3, 1);
-books.CreateBook("Building an FPS Game with Unity", 3, 1);
-books.CreateBook("The Hobbit", 1, 2);
-books.CreateBook("The Bourne Ultimatum", 2, 3);
+books.createBook("The Bourne Identity", 2, 3);
+books.createBook("The Lord of the Rings: The Two Towers", 1, 2);
+books.createBook("Unity 5: Learning C# by Developing Games", 3, 1);
+books.createBook("Building an FPS Game with Unity", 3, 1);
+books.createBook("The Hobbit", 1, 2);
+books.createBook("The Bourne Ultimatum", 2, 3);
