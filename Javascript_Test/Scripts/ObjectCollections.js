@@ -2,6 +2,12 @@
 
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+function getData = () => {
+    axios.get("http://api.training.theburo.nl").then(response => {
+        console.log(response);
+    })
+}
+
 // Sorts items by name.
 function compareByName(itemA, itemB) {
     var returnValue = 0;
