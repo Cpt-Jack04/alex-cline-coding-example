@@ -21,8 +21,16 @@ function addItemToArray(item, itemArray) {
     itemArray.sort(compareByName);
 }
 
+// Gets an item from a given database based on a given itemID.
+// Returns the item of the corresponding itemID. Returns null if item is not found.
+function getItemFromDatabase(url, itemID) {
+    return axios.get(url + itemID).then(response => {
+        return response.data;
+    });
+}
+
 // Gets an item from a given array based on a given itemID.
-// Returns the item of the corrisponding itemID. Returns null if item is not found.
+// Returns the item of the corresponding itemID. Returns null if item is not found.
 function getItemFromArray(itemID, itemArray) {
     return itemArray.find(function (element) {
         return element.id === itemID;

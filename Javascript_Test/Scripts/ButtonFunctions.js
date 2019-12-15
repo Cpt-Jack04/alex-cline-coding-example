@@ -35,8 +35,9 @@ function thOnClick(th) {
 function refreshBookTable() {
     let tbody = document.getElementById("table-books");
     deselectTr(trTags);
-    
-    for (let index = 1; index < books.getAllBooks().length + 1; index++) {
+
+    let index = 1
+    for (index; index < books.getAllBooks().length + 1; index++) {
         if (index < trTags.length) {
             let thTags = trTags[index].getElementsByTagName("th");
             thTags[0].textContent = books.getAllBooks()[index - 1].name;
@@ -85,6 +86,7 @@ newBookButton.onclick = function () {
     } else if (newBookWindow.classList == "window-open") {
         newBookWindow.classList = "";
     }
+    console.log(getItemFromDatabase("http://api.training.theburo.nl/authors/", 1));
 };
 
 newBookSubmitButton.onclick = function () {
