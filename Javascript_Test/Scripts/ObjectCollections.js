@@ -2,15 +2,9 @@
 
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-function getData = () => {
-    axios.get("http://api.training.theburo.nl").then(response => {
-        console.log(response);
-    })
-}
-
 // Sorts items by name.
 function compareByName(itemA, itemB) {
-    var returnValue = 0;
+    let returnValue = 0;
     
     if (itemA.name < itemB.name) {
         returnValue = -1;
@@ -38,15 +32,15 @@ function getItemFromArray(itemID, itemArray) {
 // Removes an item from a given array based on a given itemID.
 // Returns the removed item. Returns null if item is not found.
 function removeItemFromArray(itemID, itemArray) {
-    var returnMe = null;
+    let returnMe = null;
     
     if (itemArray.length === 1 && itemArray[0].id === itemID) {
         returnMe = itemArray.pop();
     } else if (itemArray.length > 1) {
-        var toRemove = getItemFromArray(itemID, itemArray);
+        let toRemove = getItemFromArray(itemID, itemArray);
             
         if (toRemove !== null) {
-            var swapIndex = itemArray.indexOf(toRemove);
+            let swapIndex = itemArray.indexOf(toRemove);
             
             itemArray[swapIndex] = itemArray[itemArray.length - 1];
             itemArray[itemArray.length - 1] = toRemove;
@@ -60,11 +54,11 @@ function removeItemFromArray(itemID, itemArray) {
 
 /* Object Collections */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-var authors = {
+let authors = {
     authorsArray : [],
     
     createAuthor : function (name, age) {
-        var newAuthor = new Author(name, age);
+        let newAuthor = new Author(name, age);
         return addItemToArray(newAuthor, this.authorsArray);
     },
     
@@ -83,7 +77,7 @@ var authors = {
     },
     
     updateAuthorByID : function (authorID, newName, newAge) {
-        var updatingAuthor = getItemFromArray(authorID, this.authorsArray);
+        let updatingAuthor = getItemFromArray(authorID, this.authorsArray);
         if (updatingAuthor.name !== newName) {
             updatingAuthor.updateName(newName);
         }
@@ -97,11 +91,11 @@ var authors = {
     }
 };
 
-var genres = {
+let genres = {
     genresArray : [],
     
     createGenre : function (name) {
-        var newGenre = new Genre(name);
+        let newGenre = new Genre(name);
         return addItemToArray(newGenre, this.genresArray);
     },
     
@@ -120,7 +114,7 @@ var genres = {
     },
     
     updateGenreByID : function (genreID, newName) {
-        var updatingGenre = getItemFromArray(genreID, this.genresArray);
+        let updatingGenre = getItemFromArray(genreID, this.genresArray);
         if (updatingGenre.name !== newName) {
             updatingGenre.updateName(newName);
         }
@@ -131,11 +125,11 @@ var genres = {
     }
 };
 
-var books = {
+let books = {
     booksArray : [],
     
     createBook : function (name, authorID, genreID) {
-        var newBook = new Book(name, authorID, genreID);
+        let newBook = new Book(name, authorID, genreID);
         return addItemToArray(newBook, this.booksArray);
     },
     
@@ -154,7 +148,7 @@ var books = {
     },
     
     updateBookByID : function (bookID, newName, newAuthor, newGenre) {
-        var updatingBook = getItemFromArray(bookID, this.booksArray);
+        let updatingBook = getItemFromArray(bookID, this.booksArray);
         if (updatingBook.name !== newName) {
             updatingBook.updateName(newName);
         }

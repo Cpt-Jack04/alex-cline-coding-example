@@ -1,10 +1,10 @@
 "use strict";
 
-var previousAuthorID = 0;
-var previousGenreID = 0;
-var previousBookID = 0;
+let previousAuthorID = 0;
+let previousGenreID = 0;
+let previousBookID = 0;
 
-var Author = function (name, age) {
+let Author = function (name, age) {
     previousAuthorID += 1;
     this.id = previousAuthorID;
     this.name = name;
@@ -23,7 +23,7 @@ var Author = function (name, age) {
     };
 };
 
-var Genre = function (name) {
+let Genre = function (name) {
     previousGenreID += 1;
     this.id = previousGenreID;
     this.name = name;
@@ -36,7 +36,7 @@ var Genre = function (name) {
     };
 };
 
-var Book = function (name, authorID, genreID) {
+let Book = function (name, authorID, genreID) {
     previousBookID += 1;
     this.id = previousBookID;
     this.name = name;

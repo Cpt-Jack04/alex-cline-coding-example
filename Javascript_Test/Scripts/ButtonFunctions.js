@@ -1,67 +1,62 @@
 "use strict";
 
-var newBookButton = document.getElementById("add-button");
-var newBookWindow = document.getElementById("add-book-window");
-var newBookTextField = document.getElementsByTagName("input");
-var newBookSubmitButton = document.getElementById("add-book-submit-button");
+let newBookButton = document.getElementById("add-button");
+let newBookWindow = document.getElementById("add-book-window");
+let newBookTextField = document.getElementsByTagName("input");
+let newBookSubmitButton = document.getElementById("add-book-submit-button");
 
-var removeBookButton = document.getElementById("remove-button");
-var trTags = document.getElementById("table-books").getElementsByTagName("tr");
-var selectedElement = null;
-var selectedNames = [];
+let removeBookButton = document.getElementById("remove-button");
+let trTags = document.getElementById("table-books").getElementsByTagName("tr");
+let selectedElement = null;
+let selectedNames = [];
 
 function deselectTr(deselecting) {
-    var trTag;
-    
-    var index;
-    for (index = 0; index < deselecting.length; index++) {
+    for (let index = 0; index < deselecting.length; index++) {
         deselecting[index].className = "";
     }
 }
 
 function thOnClick(th) {
     th.onclick = function () {
-        var tr = th.parentElement;
+        let tr = th.parentElement;
         
         deselectTr(trTags);
         
         tr.className = "selected";
         selectedElement = tr;
-        var elementContainers = tr.getElementsByTagName("th");
+        let elementContainers = tr.getElementsByTagName("th");
 
-        var index;
-        for (index = 0; index < elementContainers.length; index++) {
+        for (let index = 0; index < elementContainers.length; index++) {
             selectedNames[index] = elementContainers[index].textContent;
         }
     };
 }
 
 function refreshBookTable() {
-    var tbody = document.getElementById("table-books");
+    let tbody = document.getElementById("table-books");
     deselectTr(trTags);
     
-    var index = 1;
-    for (index; index < books.getAllBooks().length + 1; index++) {
+    for (let index = 1; index < books.getAllBooks().length + 1; index++) {
         if (index < trTags.length) {
-            var thTags = trTags[index].getElementsByTagName("th");
+            let thTags = trTags[index].getElementsByTagName("th");
             thTags[0].textContent = books.getAllBooks()[index - 1].name;
             thTags[1].textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].authorID).name;
             thTags[2].textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genreID).name;
         } else {
-            var newTrTag = document.createElement("tr");
+            let newTrTag = document.createElement("tr");
             tbody.appendChild(newTrTag);
             
-            var newThBook = document.createElement("th");
+            let newThBook = document.createElement("th");
             newThBook.textContent = books.getAllBooks()[index - 1].name;
             thOnClick(newThBook);
             newTrTag.appendChild(newThBook);
             
-            var newThAuthor = document.createElement("th");
+            let newThAuthor = document.createElement("th");
             newThAuthor.textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].authorID).name;
             thOnClick(newThAuthor);
             newTrTag.appendChild(newThAuthor);
             
-            var newThGenre = document.createElement("th");
+            let newThGenre = document.createElement("th");
             newThGenre.textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genreID).name;
             thOnClick(newThGenre);
             newTrTag.appendChild(newThGenre);
@@ -69,8 +64,7 @@ function refreshBookTable() {
     }
     
     if (index < trTags.length) {
-        var removeIndex = trTags.length - 1;
-        for (removeIndex; removeIndex >= index; removeIndex--) {
+        for (let removeIndex = trTags.length - 1; removeIndex >= index; removeIndex--) {
             tbody.removeChild(trTags[removeIndex]);
         }
     }
@@ -80,7 +74,7 @@ function refreshBookTable() {
 
 removeBookButton.onclick = function () {
     if (selectedElement !== null) {
-        var removedBook = books.removeBook(books.getBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
+        let removedBook = books.removeBook(books.getBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
         refreshBookTable();
     }
 };
@@ -94,17 +88,17 @@ newBookButton.onclick = function () {
 };
 
 newBookSubmitButton.onclick = function () {
-    var authorInfo = newBookTextField[1].value.toString().split("_");
+    let authorInfo = newBookTextField[1].value.toString().split("_");
     
-    var authorString = String(authorInfo[0]);
-    var tempAuthor = authors.getAuthorByName(authorString);
+    let authorString = String(authorInfo[0]);
+    let tempAuthor = authors.getAuthorByName(authorString);
     if (tempAuthor === undefined) {
         tempAuthor = authors.createAuthor(authorString, parseInt(authorInfo[1], 10));
     }
     tempAuthor = authors.getAuthorByName(authorString);
     
-    var genreString = String(newBookTextField[2].value);
-    var tempGenre = genres.getGenreByName(genreString);
+    let genreString = String(newBookTextField[2].value);
+    let tempGenre = genres.getGenreByName(genreString);
     if (tempGenre === undefined) {
         tempGenre = genres.createGenre(newBookTextField[2].value);
     }
@@ -112,8 +106,7 @@ newBookSubmitButton.onclick = function () {
     
     books.createBook(newBookTextField[0].value, tempAuthor.id, tempGenre.id);
     
-    var index;
-    for (index = 0; index < newBookTextField.length; index++) {
+    for (let index = 0; index < newBookTextField.length; index++) {
         newBookTextField[index].value = "";
     }
     
