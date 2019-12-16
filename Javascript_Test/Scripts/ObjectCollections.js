@@ -64,6 +64,11 @@ let authors = {
     
     createAuthor : function (name, age) {
         let newAuthor = new Author(name, age);
+        axios.post("http://api.training.theburo.nl/authors", {
+            name: newAuthor.name,
+            age: newAuthor.age
+        });
+
         return addItemToArray(newAuthor, this.authorsArray);
     },
     
@@ -94,6 +99,12 @@ let authors = {
         if (updatingAuthor.age !== newAge) {
             updatingAuthor.updateAge(newAge);
         }
+
+        axios.put("http://api.training.theburo.nl/authors/" + author_id, {
+            name: newName,
+            age: newAge
+        })
+        .then(refreshBookTable());
     }
 };
 
@@ -103,6 +114,10 @@ let genres = {
     
     createGenre : function (name) {
         let newGenre = new Genre(name);
+        axios.post("http://api.training.theburo.nl/genres", {
+            name: newGenre.name
+        });
+
         return addItemToArray(newGenre, this.genresArray);
     },
     
@@ -130,6 +145,11 @@ let genres = {
         if (updatingGenre.name !== newName) {
             updatingGenre.updateName(newName);
         }
+
+        axios.put("http://api.training.theburo.nl/genres/" + genre_id, {
+            name: newName
+        })
+        .then(refreshBookTable());
     }
 };
 
@@ -139,6 +159,12 @@ let books = {
     
     createBook : function (name, author_id, genre_id) {
         let newBook = new Book(name, author_id, genre_id);
+        axios.post("http://api.training.theburo.nl/books", {
+            name: newBook.name,
+            author_id: newBook.author_id,
+            genre_id: newBook.genre_id
+        });
+
         return addItemToArray(newBook, this.booksArray);
     },
     
@@ -146,8 +172,8 @@ let books = {
         return this.booksArray;
     },
     
-    getBookByID : function (bookID) {
-        return getItemFromArray(bookID, this.booksArray);
+    getBookByID : function (book_id) {
+        return getItemFromArray(book_id, this.booksArray);
     },
     
     getBookByNames : function (name, author, genre) {
@@ -160,7 +186,7 @@ let books = {
     
     removeBook : function (book_id) {
         removeItemFromDatabase("http://api.training.theburo.nl/books/", book_id);
-        return removeItemFromArray(bookID, this.booksArray);
+        return removeItemFromArray(book_id, this.booksArray);
     },
     
     updateBookByID : function (book_id, newName, newAuthor, newGenre) {
@@ -174,5 +200,12 @@ let books = {
         if (updatingBook.genre_id !== newGenre.id) {
             updatingBook.updateGenreID(newGenre);
         }
+
+        axios.put("http://api.training.theburo.nl/books/" + book_id, {
+            name: newName,
+            author_id: newAuthor.id,
+            name: newGenre.id
+        })
+        .then(refreshBookTable());
     }
 };

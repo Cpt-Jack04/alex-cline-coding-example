@@ -1,7 +1,12 @@
 "use strict";
 
+let previousAuthorID = 0;
+let previousGenreID = 0;
+let previousBookID = 0;
+
 let Author = function (name, age) {
-    this.id = authors.authorsArray.length + 1;
+    previousAuthorID += 1;
+    this.id = previousAuthorID;
     this.name = name;
     this.age = age;
     this.created_at = new Date();
@@ -19,7 +24,8 @@ let Author = function (name, age) {
 };
 
 let Genre = function (name) {
-    this.id = genres.genresArray.length + 1;
+    previousGenreID += 1;
+    this.id = previousGenreID;
     this.name = name;
     this.created_at = new Date();
     this.updated_at = this.created_at;
@@ -31,7 +37,8 @@ let Genre = function (name) {
 };
 
 let Book = function (name, author_id, genre_id) {
-    this.id = books.booksArray.length + 1;
+    previousBookID += 1;
+    this.id = previousBookID;
     this.name = name;
     this.author_id = author_id;
     this.genre_id = genre_id;
