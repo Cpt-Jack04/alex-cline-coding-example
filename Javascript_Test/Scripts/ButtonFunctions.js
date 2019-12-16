@@ -32,33 +32,49 @@ function thOnClick(th) {
     };
 }
 
-function refreshBookTable() {
+async function refreshBookTable() {
     let tbody = document.getElementById("table-books");
     deselectTr(trTags);
+    
+    if (books.booksArray.length === 0) {
+        let allAuthors = await axios.get("http://api.training.theburo.nl/authors");
+        authors.authorsArray = allAuthors.data;
+
+        let allGenres = await axios.get("http://api.training.theburo.nl/genres");
+        genres.genresArray = allGenres.data;
+
+        let allBooks = await axios.get("http://api.training.theburo.nl/books");
+        books.booksArray = allBooks.data;
+        books.booksArray.sort(compareByName);
+    }
 
     let index = 1
     for (index; index < books.getAllBooks().length + 1; index++) {
         if (index < trTags.length) {
             let thTags = trTags[index].getElementsByTagName("th");
+
             thTags[0].textContent = books.getAllBooks()[index - 1].name;
-            thTags[1].textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].authorID).name;
-            thTags[2].textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genreID).name;
+            thTags[1].textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].author_id).name;
+            thTags[2].textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genre_id).name;
         } else {
             let newTrTag = document.createElement("tr");
             tbody.appendChild(newTrTag);
             
+            // Book
             let newThBook = document.createElement("th");
             newThBook.textContent = books.getAllBooks()[index - 1].name;
             thOnClick(newThBook);
             newTrTag.appendChild(newThBook);
             
+            // Author
             let newThAuthor = document.createElement("th");
-            newThAuthor.textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].authorID).name;
+            newThAuthor.textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].author_id).name;
             thOnClick(newThAuthor);
             newTrTag.appendChild(newThAuthor);
             
+            // Genre
             let newThGenre = document.createElement("th");
-            newThGenre.textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genreID).name;
+            newThGenre.textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genre_id).name;
             thOnClick(newThGenre);
             newTrTag.appendChild(newThGenre);
         }
@@ -86,7 +102,6 @@ newBookButton.onclick = function () {
     } else if (newBookWindow.classList == "window-open") {
         newBookWindow.classList = "";
     }
-    console.log(getItemFromDatabase("http://api.training.theburo.nl/authors/", 1));
 };
 
 newBookSubmitButton.onclick = function () {

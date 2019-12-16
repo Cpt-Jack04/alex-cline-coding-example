@@ -1,62 +1,55 @@
 "use strict";
 
-let previousAuthorID = 0;
-let previousGenreID = 0;
-let previousBookID = 0;
-
 let Author = function (name, age) {
-    previousAuthorID += 1;
-    this.id = previousAuthorID;
+    this.id = authors.authorsArray.length + 1;
     this.name = name;
     this.age = age;
-    this.createdAt = new Date();
-    this.lastUpdatedAt = this.createdAt;
+    this.created_at = new Date();
+    this.updated_at = this.created_at;
     
     this.updateName = function (newName) {
         this.name = newName;
-        this.update_at = new Date();
+        this.updated_at = new Date();
     };
     
     this.updateAge = function (newAge) {
         this.age = newAge;
-        this.update_at = new Date();
+        this.updated_at = new Date();
     };
 };
 
 let Genre = function (name) {
-    previousGenreID += 1;
-    this.id = previousGenreID;
+    this.id = genres.genresArray.length + 1;
     this.name = name;
-    this.createdAt = new Date();
-    this.lastUpdatedAt = this.createdAt;
+    this.created_at = new Date();
+    this.updated_at = this.created_at;
     
     this.updateName = function (newName) {
         this.name = newName;
-        this.update_at = new Date();
+        this.updated_at = new Date();
     };
 };
 
-let Book = function (name, authorID, genreID) {
-    previousBookID += 1;
-    this.id = previousBookID;
+let Book = function (name, author_id, genre_id) {
+    this.id = books.booksArray.length + 1;
     this.name = name;
-    this.authorID = authorID;
-    this.genreID = genreID;
-    this.createdAt = new Date();
-    this.lastUpdatedAt = this.createdAt;
+    this.author_id = author_id;
+    this.genre_id = genre_id;
+    this.created_at = new Date();
+    this.updated_at = this.created_at;
     
     this.updateName = function (newName) {
         this.name = newName;
-        this.update_at = new Date();
+        this.updated_at = new Date();
     };
     
     this.updateAuthorID = function (newAuthor) {
-        this.authorID = newAuthor.id;
-        this.update_at = new Date();
+        this.author_id = newAuthor.id;
+        this.updated_at = new Date();
     };
     
     this.updateGenreID = function (newGenre) {
-        this.genreID = newGenre.id;
-        this.update_at = new Date();
+        this.genre_id = newGenre.id;
+        this.updated_at = new Date();
     };
 };
