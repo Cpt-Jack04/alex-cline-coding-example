@@ -1,87 +1,91 @@
-var newBookButton = document.getElementById("add-button");
-var newBookWindow = document.getElementById("add-book-window");
-var newBookTextField = document.getElementsByTagName("input");
-var newBookSubmitButton = document.getElementById("add-book-submit-button");
+"use strict";
 
-var removeBookButton = document.getElementById("remove-button");
-var trTags = document.getElementById("table-books").getElementsByTagName("tr");
-var selectedElement = null;
-var selectedNames = [];
+let newBookButton = document.getElementById("add-button");
+let newBookWindow = document.getElementById("add-book-window");
+let newBookTextField = document.getElementsByTagName("input");
+let newBookSubmitButton = document.getElementById("add-book-submit-button");
 
-function DeselectTr(deselecting) {
-    "use strict";
-    var trTag;
-    
-    var index;
-    for (index = 0; index < deselecting.length; index++) {
+let removeBookButton = document.getElementById("remove-button");
+let trTags = document.getElementById("table-books").getElementsByTagName("tr");
+let selectedElement = null;
+let selectedNames = [];
+
+function deselectTr(deselecting) {
+    for (let index = 0; index < deselecting.length; index++) {
         deselecting[index].className = "";
     }
 }
 
-function ThOnClick(th) {
-    "use strict";
+function thOnClick(th) {
     th.onclick = function () {
-        var shouldSelect = false;
-        var tr = th.parentElement;
+        let tr = th.parentElement;
         
-        DeselectTr(trTags);
+        deselectTr(trTags);
         
-        var trTag;
-        for (trTag in trTags) {
-            if (trTags[trTag] === tr && tr.className === "") {
-                shouldSelect = true;
-                break;
-            }
-        }
-        if (shouldSelect) {
-            tr.className = "selected";
-            selectedElement = tr;
-            var elementContainers = tr.getElementsByTagName("th");
-            
-            var index;
-            for (index = 0; index < elementContainers.length; index++) {
-                selectedNames[index] = elementContainers[index].textContent;
-            }
+        tr.className = "selected";
+        selectedElement = tr;
+        let elementContainers = tr.getElementsByTagName("th");
+
+        for (let index = 0; index < elementContainers.length; index++) {
+            selectedNames[index] = elementContainers[index].textContent;
         }
     };
 }
 
-function RefreshBookTable() {
-    "use strict";
-    var tbody = document.getElementById("table-books");
-    DeselectTr(trTags);
+async function refreshBookTable() {
+    let tbody = document.getElementById("table-books");
+    deselectTr(trTags);
     
-    var index = 1;
-    for (index; index < books.GetAllBooks().length + 1; index++) {
+    if (authors.authorsArray.length === 0 && genres.genresArray.length === 0 && books.booksArray.length === 0) {
+        let allAuthors = await axios.get("http://api.training.theburo.nl/authors");
+        authors.authorsArray = allAuthors.data;
+        previousAuthorID = authors.authorsArray[authors.authorsArray.length - 1].id;
+
+        let allGenres = await axios.get("http://api.training.theburo.nl/genres");
+        genres.genresArray = allGenres.data;
+        previousGenreID = genres.genresArray[genres.genresArray.length - 1].id;
+
+        let allBooks = await axios.get("http://api.training.theburo.nl/books");
+        books.booksArray = allBooks.data;
+        previousBookID = books.booksArray[books.booksArray.length - 1].id;
+
+        books.booksArray.sort(compareByName);
+    }
+
+    let index = 1
+    for (index; index < books.getAllBooks().length + 1; index++) {
         if (index < trTags.length) {
-            var thTags = trTags[index].getElementsByTagName("th");
-            thTags[0].textContent = books.GetAllBooks()[index - 1].name;
-            thTags[1].textContent = authors.GetAuthorByID(books.GetAllBooks()[index - 1].authorID).name;
-            thTags[2].textContent = genres.GetGenreByID(books.GetAllBooks()[index - 1].genreID).name;
+            let thTags = trTags[index].getElementsByTagName("th");
+
+            thTags[0].textContent = books.getAllBooks()[index - 1].name;
+            thTags[1].textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].author_id).name;
+            thTags[2].textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genre_id).name;
         } else {
-            var newTrTag = document.createElement("tr");
+            let newTrTag = document.createElement("tr");
             tbody.appendChild(newTrTag);
             
-            var newThBook = document.createElement("th");
-            newThBook.textContent = books.GetAllBooks()[index - 1].name;
-            ThOnClick(newThBook);
+            // Book
+            let newThBook = document.createElement("th");
+            newThBook.textContent = books.getAllBooks()[index - 1].name;
+            thOnClick(newThBook);
             newTrTag.appendChild(newThBook);
             
-            var newThAuthor = document.createElement("th");
-            newThAuthor.textContent = authors.GetAuthorByID(books.GetAllBooks()[index - 1].authorID).name;
-            ThOnClick(newThAuthor);
+            // Author
+            let newThAuthor = document.createElement("th");
+            newThAuthor.textContent = authors.getAuthorByID(books.getAllBooks()[index - 1].author_id).name;
+            thOnClick(newThAuthor);
             newTrTag.appendChild(newThAuthor);
             
-            var newThGenre = document.createElement("th");
-            newThGenre.textContent = genres.GetGenreByID(books.GetAllBooks()[index - 1].genreID).name;
-            ThOnClick(newThGenre);
+            // Genre
+            let newThGenre = document.createElement("th");
+            newThGenre.textContent = genres.getGenreByID(books.getAllBooks()[index - 1].genre_id).name;
+            thOnClick(newThGenre);
             newTrTag.appendChild(newThGenre);
         }
     }
     
     if (index < trTags.length) {
-        var removeIndex = trTags.length - 1;
-        for (removeIndex; removeIndex >= index; removeIndex--) {
+        for (let removeIndex = trTags.length - 1; removeIndex >= index; removeIndex--) {
             tbody.removeChild(trTags[removeIndex]);
         }
     }
@@ -91,42 +95,44 @@ function RefreshBookTable() {
 
 removeBookButton.onclick = function () {
     if (selectedElement !== null) {
-        var removedBook = books.RemoveBook(books.GetBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
-        RefreshBookTable();
+        let removedBook = books.removeBook(books.getBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
+        refreshBookTable();
     }
-}
+};
 
 newBookButton.onclick = function () {
     if (newBookWindow.classList == "") {
         newBookWindow.classList = "window-open";
+    } else if (newBookWindow.classList == "window-open") {
+        newBookWindow.classList = "";
     }
-}
+};
 
 newBookSubmitButton.onclick = function () {
-    var authorInfo = newBookTextField[1].value.toString().split("_");
+    let authorInfo = newBookTextField[1].value.toString().split("_");
     
-    var authorString = String(authorInfo[0])
-    var tempAuthor = authors.GetAuthorByName(authorString);
-    if (tempAuthor == undefined) {
-        tempAuthor = authors.CreateAuthor(authorString, parseInt(authorInfo[1]));
+    let authorString = String(authorInfo[0]);
+    let tempAuthor = authors.getAuthorByName(authorString);
+    if (tempAuthor === undefined) {
+        tempAuthor = authors.createAuthor(authorString, parseInt(authorInfo[1], 10));
     }
-    tempAuthor = authors.GetAuthorByName(authorString);
+    tempAuthor = authors.getAuthorByName(authorString);
     
-    var genreString = String(newBookTextField[2].value);
-    var tempGenre = genres.GetGenreByName(genreString);
-    if (tempGenre == undefined) {
-        tempGenre = genres.CreateGenre(newBookTextField[2].value);
+    let genreString = String(newBookTextField[2].value);
+    let tempGenre = genres.getGenreByName(genreString);
+    if (tempGenre === undefined) {
+        tempGenre = genres.createGenre(newBookTextField[2].value);
     }
-    tempGenre = genres.GetGenreByName(genreString);
+    tempGenre = genres.getGenreByName(genreString);
     
-    books.CreateBook(newBookTextField[0].value, tempAuthor.id, tempGenre.id);
-    var index;
-    for (index = 0; index < newBookTextField.length; index++) {
+    books.createBook(newBookTextField[0].value, tempAuthor.id, tempGenre.id);
+    
+    for (let index = 0; index < newBookTextField.length; index++) {
         newBookTextField[index].value = "";
     }
     
-    RefreshBookTable();
+    refreshBookTable();
     newBookWindow.classList = "";
-}
+};
 
-RefreshBookTable();
+refreshBookTable();

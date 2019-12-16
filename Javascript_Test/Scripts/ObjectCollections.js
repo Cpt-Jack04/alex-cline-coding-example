@@ -1,263 +1,211 @@
+"use strict";
+
 /* Generic Methods */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Adds an item to a given array based on a given item's ID.
-function AddItemToArray(item, itemArray) {
-    "use strict";
+function addItemToArray(item, itemArray) {
     itemArray.push(item);
-    itemArray.sort(function (a, b) {
-        var returnValue = 0;
-        
-        if (a.name < b.name) {
-            returnValue = -1;
-        }
-        if (a.name > b.name) {
-            returnValue = 1;
-        }
-        return returnValue;
-    });
+    itemArray.sort(compareByName);
 }
 
-/// Returns true if the given item.id matches itemID.
-function MyIDMatches(itemID, item) {
-    "use strict";
-    return item.id === itemID;
+// Sorts items by name.
+function compareByName(itemA, itemB) {
+    let returnValue = 0;
+    
+    if (itemA.name < itemB.name) {
+        returnValue = -1;
+    } else if (itemA.name > itemB.name) {
+        returnValue = 1;
+    }
+    
+    return returnValue;
 }
 
 // Gets an item from a given array based on a given itemID.
-// Returns the item of the corrisponding itemID. Returns null if item is not found.
-function GetItemFromArray(itemID, itemArray) {
-    "use strict";
-    var returnMe;
-    
-    var index;
-    for (index = 0; index < itemArray.length; index++) {
-        if (MyIDMatches(itemID, itemArray[index])) {
-            returnMe = itemArray[index];
-            break;
-        }
-    }
-    return returnMe;
+// Returns the item of the corresponding itemID. Returns null if item is not found.
+function getItemFromArray(itemID, itemArray) {
+    return itemArray.find(function (element) {
+        return element.id === itemID;
+    });
 }
 
 // Removes an item from a given array based on a given itemID.
 // Returns the removed item. Returns null if item is not found.
-function RemoveItemFromArray(itemID, itemArray) {
-    "use strict";
-    var returnMe = null;
+function removeItemFromArray(itemID, itemArray) {
+    let returnMe = null;
     
     if (itemArray.length === 1 && itemArray[0].id === itemID) {
         returnMe = itemArray.pop();
     } else if (itemArray.length > 1) {
-        var toRemove = GetItemFromArray(itemID, itemArray);
+        let toRemove = getItemFromArray(itemID, itemArray);
             
         if (toRemove !== null) {
-            var swapIndex;
-            
-            for (swapIndex = 0; swapIndex < itemArray.length; swapIndex++) {
-                if (MyIDMatches(itemID, itemArray[swapIndex])) {
-                    toRemove = itemArray[swapIndex];
-                    break;
-                }
-            }
+            let swapIndex = itemArray.indexOf(toRemove);
             
             itemArray[swapIndex] = itemArray[itemArray.length - 1];
             itemArray[itemArray.length - 1] = toRemove;
         
             returnMe = itemArray.pop();
-            itemArray.sort(function (a, b) {
-                var returnValue = 0;
-
-                if (a.name < b.name) {
-                    returnValue = -1;
-                }
-                if (a.name > b.name) {
-                    returnValue = 1;
-                }
-                return returnValue;
-            });
+            itemArray.sort(compareByName);
         }
     }
     return returnMe;
 }
 
+// Removes an item from the Database with a given url and itemID.
+function removeItemFromDatabase(url, itemID) {
+    return axios.delete(url + itemID);
+}
+
 /* Object Collections */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-var authors = {
+let authors = {
     authorsArray : [],
     
-    CreateAuthor : function (name, age) {
-        "use strict";
-        var newAuthor = new Author(name, age);
-        return AddItemToArray(newAuthor, this.authorsArray);
+    createAuthor : function (name, age) {
+        let newAuthor = new Author(name, age);
+        axios.post("http://api.training.theburo.nl/authors", {
+            name: newAuthor.name,
+            age: parseInt(newAuthor.age, 10)
+        });
+
+        return addItemToArray(newAuthor, this.authorsArray);
     },
     
-    GetAuthorByID : function (authorID) {
-        "use strict";
-        return GetItemFromArray(authorID, this.authorsArray);
-    },
-    
-    GetAuthorByName : function (name) {
-        "use strict";
-        var shouldLoop = true;
-        var returnMe;
-        var author;
-        
-        var index;
-        for (index = 0; index < this.authorsArray.length; index++) {
-            if (shouldLoop) {
-                author = this.authorsArray[index];
-                if (author.name == name) {
-                    shouldLoop = false;
-                    returnMe = author;
-                }
-            }
-        }
-        return returnMe;
-    },
-    
-    GetAllAuthors : function () {
-        "use strict";
+    getAllAuthors : function () {
         return this.authorsArray;
     },
     
-    UpdateAuthorByID : function (authorID, newName, newAge) {
-        "use strict";
-        var updatingAuthor = new GetItemFromArray(authorID, this.authorsArray);
+    getAuthorByID : function (author_id) {
+        return getItemFromArray(author_id, this.authorsArray);
+    },
+    
+    getAuthorByName : function (name) {
+        return this.authorsArray.find(function (author) {
+            return author.name === name;
+        });
+    },
+    
+    removeAuthor : function (author_id) {
+        removeItemFromDatabase("http://api.training.theburo.nl/authors/", author_id);
+        return removeItemFromArray(author_id, this.authorsArray);
+    },
+    
+    updateAuthorByID : function (author_id, newName, newAge) {
+        let updatingAuthor = getItemFromArray(author_id, this.authorsArray);
         if (updatingAuthor.name !== newName) {
-            updatingAuthor.UpdateName(newName);
+            updatingAuthor.updateName(newName);
         }
         if (updatingAuthor.age !== newAge) {
-            updatingAuthor.UpdateAge(newAge);
+            updatingAuthor.updateAge(newAge);
         }
-    },
-    
-    RemoveAuthor : function (authorID) {
-        "use strict";
-        return RemoveItemFromArray(authorID, this.authorsArray);
+
+        axios.put("http://api.training.theburo.nl/authors/" + author_id, {
+            name: newName,
+            age: parseInt(newAge, 10)
+        })
+        .then(refreshBookTable());
     }
 };
 
-var genres = {
+///////////////////////////////////////////////////////////////////////////////////////////////////
+let genres = {
     genresArray : [],
     
-    CreateGenre : function (name) {
-        "use strict";
-        var newGenre = new Genre(name);
-        return AddItemToArray(newGenre, this.genresArray);
+    createGenre : function (name) {
+        let newGenre = new Genre(name);
+        axios.post("http://api.training.theburo.nl/genres", {
+            name: newGenre.name
+        });
+
+        return addItemToArray(newGenre, this.genresArray);
     },
     
-    GetGenreByID : function (genreID) {
-        "use strict";
-        return GetItemFromArray(genreID, this.genresArray);
-    },
-    
-    GetGenreByName : function (name) {
-        "use strict";
-        var shouldLoop = true;
-        var returnMe;
-        var genre;
-        
-        var index;
-        for (index = 0; index < this.genresArray.length; index++) {
-            if (shouldLoop) {
-                genre = this.genresArray[index];
-                if (genre.name == name) {
-                    shouldLoop = false;
-                    returnMe = genre;
-                }
-            }
-        }
-        return returnMe;
-    },
-    
-    GetAllGenres : function () {
-        "use strict";
+    getAllGenres : function () {
         return this.genresArray;
     },
-    
-    UpdateGenreByID : function (genreID, newName) {
-        "use strict";
-        var updatingGenre = new GetItemFromArray(genreID, this.genresArray);
-        if (updatingGenre.name !== newName) {
-            updatingGenre.UpdateName(newName);
-        }
+
+    getGenreByID : function (genre_id) {
+        return getItemFromArray(genre_id, this.genresArray);
     },
     
-    RemoveGenre : function (genreID) {
-        "use strict";
-        return RemoveItemFromArray(genreID, this.genresArray);
+    getGenreByName : function (name) {
+        return this.genresArray.find(function (genre) {
+            return genre.name === name;
+        });
+    },
+    
+    removeGenre : function (genre_id) {
+        removeItemFromDatabase("http://api.training.theburo.nl/genres/", genre_id);
+        return removeItemFromArray(genre_id, this.genresArray);
+    },
+    
+    updateGenreByID : function (genre_id, newName) {
+        let updatingGenre = getItemFromArray(genre_id, this.genresArray);
+        if (updatingGenre.name !== newName) {
+            updatingGenre.updateName(newName);
+        }
+
+        axios.put("http://api.training.theburo.nl/genres/" + genre_id, {
+            name: newName
+        })
+        .then(refreshBookTable());
     }
 };
 
-var books = {
+///////////////////////////////////////////////////////////////////////////////////////////////////
+let books = {
     booksArray : [],
     
-    CreateBook : function (name, authorID, genreID) {
-        "use strict";
-        var newBook = new Book(name, authorID, genreID);
-        return AddItemToArray(newBook, this.booksArray);
+    createBook : function (name, author_id, genre_id) {
+        let newBook = new Book(name, author_id, genre_id);
+        axios.post("http://api.training.theburo.nl/books", {
+            name: newBook.name,
+            author_id: parseInt(newBook.author_id, 10),
+            genre_id: parseInt(newBook.genre_id, 10)
+        })
+
+        return addItemToArray(newBook, this.booksArray);
     },
     
-    GetBookByID : function (bookID) {
-        "use strict";
-        return GetItemFromArray(bookID, this.booksArray);
-    },
-    
-    GetBookByNames : function (name, author, genre) {
-        "use strict";
-        var shouldLoop = true;
-        var returnMe;
-        var book;
-        
-        var index;
-        for (index = 0; index < this.booksArray.length; index++) {
-            if (shouldLoop) {
-                book = this.booksArray[index];
-                if (book.name === name && authors.GetAuthorByID(book.authorID).name === author && genres.GetGenreByID(book.genreID).name === genre) {
-                    shouldLoop = false;
-                    returnMe = book;
-                }
-            }
-        }
-        return returnMe;
-    },
-    
-    GetAllBooks : function () {
-        "use strict";
+    getAllBooks : function () {
         return this.booksArray;
     },
     
-    UpdateBookByID : function (bookID, newName, newAuthor, newGenre) {
-        "use strict";
-        var updatingBook = new GetItemFromArray(bookID, this.booksArray);
-        if (updatingBook.name !== newName) {
-            updatingBook.UpdateName(newName);
-        }
-        if (updatingBook.authorID !== newAuthor.id) {
-            updatingBook.UpdatAuthorID(newAuthor);
-        }
-        if (updatingBook.genreID !== newGenre.id) {
-            updatingBook.UpdateGenreID(newGenre);
-        }
+    getBookByID : function (book_id) {
+        return getItemFromArray(book_id, this.booksArray);
     },
     
-    RemoveBook : function (bookID) {
-        "use strict";
-        return RemoveItemFromArray(bookID, this.booksArray);
+    getBookByNames : function (name, author, genre) {
+        return this.booksArray.find(function (book) {
+            return book.name === name &&
+                   authors.getAuthorByID(book.author_id).name === author &&
+                   genres.getGenreByID(book.genre_id).name === genre;
+        });
+    },
+    
+    removeBook : function (book_id) {
+        removeItemFromDatabase("http://api.training.theburo.nl/books/", book_id);
+        return removeItemFromArray(book_id, this.booksArray);
+    },
+    
+    updateBookByID : function (book_id, newName, newAuthor, newGenre) {
+        let updatingBook = getItemFromArray(book_id, this.booksArray);
+        if (updatingBook.name !== newName) {
+            updatingBook.updateName(newName);
+        }
+        if (updatingBook.author_id !== newAuthor.id) {
+            updatingBook.updatAuthorID(newAuthor);
+        }
+        if (updatingBook.genre_id !== newGenre.id) {
+            updatingBook.updateGenreID(newGenre);
+        }
+
+        axios.put("http://api.training.theburo.nl/books/" + book_id, {
+            name: newName,
+            author_id: parseInt(newAuthor.id, 10),
+            genre_id: parseInt(newGenre.id, 10)
+        })
+        .then(refreshBookTable());
     }
 };
-
-authors.CreateAuthor("Tolken, J.R.", 127);
-authors.CreateAuthor("Ludlum, Robert", 92);
-authors.CreateAuthor("Doran, John P.", 35);
-
-genres.CreateGenre("Tutorials");
-genres.CreateGenre("Fantasy");
-genres.CreateGenre("Spy Fiction");
-
-books.CreateBook("The Bourne Identity", 2, 3);
-books.CreateBook("The Lord of the Rings: The Two Towers", 1, 2);
-books.CreateBook("Unity 5: Learning C# by Developing Games", 3, 1);
-books.CreateBook("Building an FPS Game with Unity", 3, 1);
-books.CreateBook("The Hobbit", 1, 2);
-books.CreateBook("The Bourne Ultimatum", 2, 3);

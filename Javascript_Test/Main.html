@@ -8,28 +8,32 @@
         
         <div id="wrapper">
             
-            <div id="header">
-                <span id="header-text">
-                    <h1>Book List</h1>
-                </span>
-                <sp id="header-spacer"></sp>
-                <span id="header-buttons">
-                    <p id="add-button">Add New Book</p>
-                    <p id="remove-button">Remove Book</p>
-                </span>
+            <div id="top">
+                <div id="header">
+                    <span id="header-text">
+                        <h1>Book List</h1>
+                    </span>
+                    <sp id="header-spacer"></sp>
+                    <span id="header-buttons">
+                        <p id="add-button">Add New Book</p>
+                        <p id="remove-button">Remove Book</p>
+                    </span>
+                </div>
+                
+                <div id="add-book-window">
+                    <form>
+                        Enter the Book Title:<br>
+                        <input type="text" name="title">
+                        Enter the Author's Name followed by their age (example - J.R. Tolken_127):<br>
+                        <input type="text" name="author">
+                        Enter the Book's genre:<br>
+                        <input type="text" name="genre">
+                        <button id="add-book-submit-button" type="button">Submit the Book.</button>
+                    </form>
+                </div>
             </div>
-            
-            <div id="add-book-window">
-                <form>
-                    Enter the Book yitle:<br>
-                    <input type="text" name="title">
-                    Enter the Author's Name followed by their age (example - Tolken, J.R._127):<br>
-                    <input type="text" name="author">
-                    Enter the Book's genre:<br>
-                    <input type="text" name="genre">
-                    <button id="add-book-submit-button" type="button">Submit the Book.</button>
-                </form>
-            </div>
+
+            <div id="empty"></div>
                         
             <table>
                 <tbody id="table-books">
@@ -43,6 +47,7 @@
             
         </div>
         
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="Scripts/ObjectDefinitions.js"></script>
         <script src="Scripts/ObjectCollections.js"></script>
         <script src="Scripts/ButtonFunctions.js"></script>

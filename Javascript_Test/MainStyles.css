@@ -51,6 +51,10 @@
     margin: 10 20 0;
 }
 
+#empty {
+    height: 140px;
+}
+
 #header {
     text-align: center;
     
@@ -89,6 +93,12 @@
 
 #header-text {
     display: inline-block;
+}
+
+#top {
+    position: fixed;
+    
+    background-color: rgba(29, 31, 33, 1.0);
 }
 
 #wrapper {
