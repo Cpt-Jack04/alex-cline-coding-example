@@ -39,7 +39,7 @@ async function refreshBookTable() {
     if (authors.authorsArray.length === 0 && genres.genresArray.length === 0 && books.booksArray.length === 0) {
         let allAuthors = await axios.get("http://api.training.theburo.nl/authors");
         authors.authorsArray = allAuthors.data;
-        previousAuthorID = authors.authorsArray[authors.authorsArray.length - 1];
+        previousAuthorID = authors.authorsArray[authors.authorsArray.length - 1].id;
 
         let allGenres = await axios.get("http://api.training.theburo.nl/genres");
         genres.genresArray = allGenres.data;
@@ -96,7 +96,6 @@ async function refreshBookTable() {
 removeBookButton.onclick = function () {
     if (selectedElement !== null) {
         let removedBook = books.removeBook(books.getBookByNames(selectedNames[0], selectedNames[1], selectedNames[2]).id);
-        console.log(removedBook);
         refreshBookTable();
     }
 };

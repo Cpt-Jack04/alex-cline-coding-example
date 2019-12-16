@@ -66,7 +66,7 @@ let authors = {
         let newAuthor = new Author(name, age);
         axios.post("http://api.training.theburo.nl/authors", {
             name: newAuthor.name,
-            age: newAuthor.age
+            age: parseInt(newAuthor.age, 10)
         });
 
         return addItemToArray(newAuthor, this.authorsArray);
@@ -102,7 +102,7 @@ let authors = {
 
         axios.put("http://api.training.theburo.nl/authors/" + author_id, {
             name: newName,
-            age: newAge
+            age: parseInt(newAge, 10)
         })
         .then(refreshBookTable());
     }
@@ -161,9 +161,9 @@ let books = {
         let newBook = new Book(name, author_id, genre_id);
         axios.post("http://api.training.theburo.nl/books", {
             name: newBook.name,
-            author_id: newBook.author_id,
-            genre_id: newBook.genre_id
-        });
+            author_id: parseInt(newBook.author_id, 10),
+            genre_id: parseInt(newBook.genre_id, 10)
+        })
 
         return addItemToArray(newBook, this.booksArray);
     },
@@ -203,8 +203,8 @@ let books = {
 
         axios.put("http://api.training.theburo.nl/books/" + book_id, {
             name: newName,
-            author_id: newAuthor.id,
-            name: newGenre.id
+            author_id: parseInt(newAuthor.id, 10),
+            genre_id: parseInt(newGenre.id, 10)
         })
         .then(refreshBookTable());
     }
